@@ -1,31 +1,29 @@
 import React from "react";
+import { useEffect, useState, useRef } from "react";
 import logo from "../logo.svg";
 import "../App.css";
-// import Button from "@mui/material/Button";
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import SaveIcon from "@material-ui/icons/Save";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import TextField from "@material-ui/core/TextField";
-import "fontsource-roboto";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-
 import {
-  makeStyles,
-  ThemeProvider,
-  createTheme,
-} from "@material-ui/core/styles";
-import { green, orange } from "@material-ui/core/colors";
+  AppBar,
+  Button,
+  ButtonGroup,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Paper,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
+import MenuIcon from "@mui/icons-material/Menu";
+import { green, orange } from "@mui/material/colors";
+import "fontsource-roboto";
+import { getUserACs } from "../lib/api";
 
 const useStyles = makeStyles({
   root: {
@@ -56,7 +54,11 @@ const theme = createTheme({
 
 function ButtonStyled() {
   const classes = useStyles();
-  return <Button className={classes.root}>Test styled Button</Button>;
+  return (
+    <Button className={classes.root} onClick={this}>
+      Test styled Button
+    </Button>
+  );
 }
 
 function CheckboxExample() {
@@ -78,19 +80,19 @@ function CheckboxExample() {
   );
 }
 
-function Examples() {
+function MUIexamples() {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="xs">
         <div className="App">
           <header className="App-header">
-            <AppBar color="secondary">
+            <AppBar color="primary">
               <Toolbar>
                 <IconButton>
                   <MenuIcon></MenuIcon>
                 </IconButton>
                 <Typography variant="h6">MUI Themeing</Typography>
-                <Button>Login</Button>
+                <Button color="secondary">Login</Button>
               </Toolbar>
             </AppBar>
             <Typography variant="h2">Welcome to MUI</Typography>
@@ -144,4 +146,4 @@ function Examples() {
   );
 }
 
-export default Examples;
+export default MUIexamples;

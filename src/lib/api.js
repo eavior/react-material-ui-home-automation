@@ -12,8 +12,10 @@ export async function getUserACs() {
     BaseUrl + "/users/me/pods?apiKey=" + apiKey
     // getAuthConfig(token)
   );
-  console.log(response.data);
-  return response.data;
+  const acList = response.data.result;
+  var result = acList.map((ac) => ac.id);
+  console.log(result);
+  return result;
 }
 
 function getAuthConfig(token) {

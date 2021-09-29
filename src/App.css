@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  margin-top: 55px;
+  /* margin-top: 55px; */
 }
 
 .App-logo {
@@ -14,12 +14,8 @@
   }
 }
 
-.input {
-  color: white !important;
-}
-
 .App-header {
-  background-color: #282c34;
+  background-color: #cad0dc;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
