@@ -44,74 +44,45 @@ export default function SensiboCard(props) {
   const { id } = props;
   const isMounted = useRef(false);
   const [expanded, setExpanded] = React.useState(false);
-  // const [ACData, setACData] = useState([0]);
-  // const [success, setSuccess] = useState("empty");
-  // const [on, setOn] = useState("");
+  const [ACData, setACData] = useState([0]);
+  const [success, setSuccess] = useState("empty");
+  const [on, setOn] = useState("");
   const [mode, setMode] = useState("cool");
-  // const [targetTemperature, setTargetTemperature] = useState("");
-  // const [fanLevel, setFanLevel] = useState("");
-  // const [swing, setSwing] = useState("");
-  // const [failureReason, setFailureReason] = useState("");
+  const [targetTemperature, setTargetTemperature] = useState("");
+  const [fanLevel, setFanLevel] = useState("");
+  const [swing, setSwing] = useState("");
+  const [failureReason, setFailureReason] = useState("");
 
   useEffect(() => {
     isMounted.current = true;
     console.log("id: " + id);
-    // if (id) loadACData(id);
+    if (id) loadACData(id);
     return () => {
       isMounted.current = false;
     };
   }, []);
 
-  // const loadACData = async (id) => {
-  //   try {
-  //     console.log(id);
-  //     const ACDataArray = await getACData(id);
-  //     // console.log(userACs);
-  //     console.log(ACDataArray);
+  const loadACData = async (id) => {
+    try {
+      console.log(id);
+      const ACDataArray = await getACData(id);
+      // console.log(userACs);
+      console.log(ACDataArray);
 
-  //     const reference = [
-  //       {
-  //         id: "BjHq2fCHco_nHnZCCyivW",
-  //         status: "Failed",
-  //         acState: {
-  //           timestamp: {
-  //             time: "2021-09-30T14:30:18.786002Z",
-  //             secondsAgo: 0,
-  //           },
-  //           on: false,
-  //           mode: "cool",
-  //           targetTemperature: 21,
-  //           temperatureUnit: "C",
-  //           fanLevel: "high",
-  //           swing: "stopped",
-  //           horizontalSwing: "stopped",
-  //           light: "on",
-  //         },
-  //         changedProperties: [],
-  //         reason: "GoogleAssistant",
-  //         failureReason: "PodNotConnected",
-  //       },
-  //     ];
+      if (success === "Success") console.log("yey");
+      //       setFailureReason();
+      // setOn();
+      // setMode();
+      // setTargetTemperature();
+      // setFanLevel();
+      // setSwing();
 
-  //     console.log(reference[0].status);
-
-  //     setACData(ACDataArray);
-  //     setSuccess(ACDataArray[0].status);
-  //     console.log(success);
-  //     if (success === "Success") console.log("yey");
-  //     //       setFailureReason();
-  //     // setOn();
-  //     // setMode();
-  //     // setTargetTemperature();
-  //     // setFanLevel();
-  //     // setSwing();
-
-  //     // var result = acData.map((acData) => acData.acState);
-  //     // console.log(acData);
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // };
+      // var result = acData.map((acData) => acData.acState);
+      // console.log(acData);
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);

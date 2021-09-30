@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import SensiboCard from "./SensiboCard";
-import { getUserACs } from "../lib/api";
+import { getUserACs, getACData } from "../lib/api";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -20,13 +20,25 @@ const data = [];
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 const lightTheme = createTheme({ palette: { mode: "light" } });
 
-export default function SensiboMain() {
+// const Greeting = React.memo((props) => {
+//   console.log("Greeting Comp render");
+//   return <h1>Hi {props.name}!</h1>;
+// });
+
+// const Greeting = (props) => {
+//   console.log("Greeting Comp render");
+//   return <h1>Hi {props.name}!</h1>;
+// };
+
+const SensiboMain = React.memo((props) => {
   const isMounted = useRef(false);
-  const [ACList, setACList] = useState([1]);
+  const [ACList, setACList] = useState([]);
+  const [ACList2, setACList2] = useState([1]);
 
   useEffect(() => {
     isMounted.current = true;
     loadACs();
+
     return () => {
       isMounted.current = false;
     };
@@ -35,15 +47,29 @@ export default function SensiboMain() {
   const loadACs = async () => {
     try {
       const userACs = await getUserACs();
-      console.log(userACs);
-      // setACList(ACList.map((item) => item.id));
-      console.log("next");
-      console.log(userACs.map((ac) => ac.id));
-      console.log("next2");
-      setACList(userACs.map((ac) => ac.id));
-      console.log(typeof userACs);
-      // setACList(userACs);
-      console.log(ACList);
+      const AcList = await userACs.map((item) => item.id);
+      setACList(AcList);
+      await createAcData();
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const createAcData = async () => {
+    try {
+      let newArray = [];
+      console.log(ACList.length);
+      if (ACList.length > 0) {
+        ACList.forEach(async function (item) {
+          const response2 = await getACData(item);
+          // console.log(response2);
+
+          newArray.push(response2);
+        });
+      }
+      console.log(newArray);
+      setACList2(newArray);
+      console.log(newArray);
     } catch (error) {
       alert(error);
     }
@@ -78,4 +104,5 @@ export default function SensiboMain() {
       ))}
     </Grid>
   );
-}
+});
+export default SensiboMain;
