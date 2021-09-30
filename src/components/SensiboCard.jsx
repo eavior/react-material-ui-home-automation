@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState, useRef } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -26,6 +27,8 @@ import { Icon } from "@iconify/react";
 
 import Grid from "@mui/material/Grid";
 
+import { getACData } from "../lib/api";
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -39,15 +42,83 @@ const ExpandMore = styled((props) => {
 
 export default function SensiboCard(props) {
   const { id } = props;
+  const isMounted = useRef(false);
   const [expanded, setExpanded] = React.useState(false);
-  const [mode, setMode] = React.useState("cool");
+  // const [ACData, setACData] = useState([0]);
+  // const [success, setSuccess] = useState("empty");
+  // const [on, setOn] = useState("");
+  const [mode, setMode] = useState("cool");
+  // const [targetTemperature, setTargetTemperature] = useState("");
+  // const [fanLevel, setFanLevel] = useState("");
+  // const [swing, setSwing] = useState("");
+  // const [failureReason, setFailureReason] = useState("");
+
+  useEffect(() => {
+    isMounted.current = true;
+    console.log("id: " + id);
+    // if (id) loadACData(id);
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  // const loadACData = async (id) => {
+  //   try {
+  //     console.log(id);
+  //     const ACDataArray = await getACData(id);
+  //     // console.log(userACs);
+  //     console.log(ACDataArray);
+
+  //     const reference = [
+  //       {
+  //         id: "BjHq2fCHco_nHnZCCyivW",
+  //         status: "Failed",
+  //         acState: {
+  //           timestamp: {
+  //             time: "2021-09-30T14:30:18.786002Z",
+  //             secondsAgo: 0,
+  //           },
+  //           on: false,
+  //           mode: "cool",
+  //           targetTemperature: 21,
+  //           temperatureUnit: "C",
+  //           fanLevel: "high",
+  //           swing: "stopped",
+  //           horizontalSwing: "stopped",
+  //           light: "on",
+  //         },
+  //         changedProperties: [],
+  //         reason: "GoogleAssistant",
+  //         failureReason: "PodNotConnected",
+  //       },
+  //     ];
+
+  //     console.log(reference[0].status);
+
+  //     setACData(ACDataArray);
+  //     setSuccess(ACDataArray[0].status);
+  //     console.log(success);
+  //     if (success === "Success") console.log("yey");
+  //     //       setFailureReason();
+  //     // setOn();
+  //     // setMode();
+  //     // setTargetTemperature();
+  //     // setFanLevel();
+  //     // setSwing();
+
+  //     // var result = acData.map((acData) => acData.acState);
+  //     // console.log(acData);
+  //   } catch (error) {
+  //     alert(error);
+  //   }
+  // };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   return (
-    <Card sx={{ minWidth: 250, maxWidth: 300 }}>
+    <Card sx={{ minWidth: 300, maxWidth: 300 }}>
       <CardHeader
         // avatar={
         //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -83,7 +154,7 @@ export default function SensiboCard(props) {
           </IconButton>
 
           <IconButton sx={{ mx: "auto", bgcolor: blue[500] }}>
-            <Avatar sx={{ bgcolor: blue[500] }} variant="square">
+            <Avatar sx={{ bgcolor: blue[500] }}>
               <div>20&#176;C</div>
             </Avatar>
           </IconButton>

@@ -13,9 +13,47 @@ export async function getUserACs() {
     // getAuthConfig(token)
   );
   const acList = response.data.result;
-  var result = acList.map((ac) => ac.id);
-  console.log(result);
+
+  var result = acList; //OPTION 1, only ID's
+  //OPTION 2:
+  // var result = [];
+  // acList.forEach(async function (item) {
+  //   const response2 = await axios.get(
+  //     BaseUrl + "/pods/" + item.id + "/acStates?limit=1&apiKey=" + apiKey
+  //     // getAuthConfig(token)
+  //   );
+
+  //   result.push({
+  //     id: item.id,
+  //     status: response2.data.result[0].status,
+  //     on: response2.data.result[0].acState.on,
+  //     mode: response2.data.result[0].acState.mode,
+  //     targetTemperature: response2.data.result[0].acState.targetTemperature,
+  //     temperatureUnit: response2.data.result[0].acState.temperatureUnit,
+  //     fanLevel: response2.data.result[0].acState.fanLevel,
+  //     swing: response2.data.result[0].acState.swing,
+  //     light: response2.data.result[0].acState.light,
+  //     changedProperties: response2.data.result[0].changedProperties,
+  //     reason: response2.data.result[0].reason,
+  //     failureReason: response2.data.result[0].failureReason,
+  //   });
+  // });
   return result;
+}
+
+export async function getACData(pod) {
+  if (!pod) return;
+  else {
+    const response = await axios.get(
+      BaseUrl + "/pods/" + pod + "/acStates?limit=1&apiKey=" + apiKey
+      // getAuthConfig(token)
+    );
+    // const acData = response.data.result;
+
+    // var result = acList.map((ac) => ac.id);
+    // console.log(result);
+    return response.data.result;
+  }
 }
 
 function getAuthConfig(token) {

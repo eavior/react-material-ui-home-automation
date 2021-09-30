@@ -22,7 +22,7 @@ const lightTheme = createTheme({ palette: { mode: "light" } });
 
 export default function SensiboMain() {
   const isMounted = useRef(false);
-  const [ACList, setACList] = useState({});
+  const [ACList, setACList] = useState([1]);
 
   useEffect(() => {
     isMounted.current = true;
@@ -35,8 +35,15 @@ export default function SensiboMain() {
   const loadACs = async () => {
     try {
       const userACs = await getUserACs();
-      // console.log(userACs);
-      setACList(userACs);
+      console.log(userACs);
+      // setACList(ACList.map((item) => item.id));
+      console.log("next");
+      console.log(userACs.map((ac) => ac.id));
+      console.log("next2");
+      setACList(userACs.map((ac) => ac.id));
+      console.log(typeof userACs);
+      // setACList(userACs);
+      console.log(ACList);
     } catch (error) {
       alert(error);
     }
@@ -62,8 +69,8 @@ export default function SensiboMain() {
                 gridTemplateColumns: { md: "1fr 1fr" },
                 gap: 2,
               }}>
-              {ACList.map((id) => (
-                <SensiboCard key={id} id={id}></SensiboCard>
+              {ACList.map((item) => (
+                <SensiboCard key={item} id={item}></SensiboCard>
               ))}
             </Box>
           </ThemeProvider>
