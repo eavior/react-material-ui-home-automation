@@ -38,6 +38,29 @@ export async function getACData(itemId) {
   return result;
 }
 
+// One or more parameters:
+
+// BaseUrl + "/pods/" + itemId + "/acStates/?apiKey=" + apiKey
+
+// {
+//   "acState": {
+//     "on": true,
+//     "mode": "cool",
+//     "fanLevel": "auto",
+//     "targetTemperature": 21,
+//     "temperatureUnit": "C",
+//     "swing": "stopped"
+//   }
+// }
+
+// One parameter:
+
+// BaseUrl + "/pods/" + itemId + "/acStates/" + parameter + "?apiKey=" + apiKey
+
+// {
+//   "newValue": 22
+// }
+
 // export async function getACData(pod) {
 //   if (!pod) return;
 //   else {

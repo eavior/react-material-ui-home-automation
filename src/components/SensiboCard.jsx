@@ -45,13 +45,19 @@ export default function SensiboCard(props) {
   const isMounted = useRef(false);
   const [expanded, setExpanded] = React.useState(false);
   const [ACData, setACData] = useState([0]);
-  const [success, setSuccess] = useState("empty");
-  const [on, setOn] = useState("");
-  const [mode, setMode] = useState("cool");
+  const [status, setStatus] = useState("empty");
+  const [onStatus, setOnStatus] = useState(false);
+  const [mode, setMode] = useState("");
   const [targetTemperature, setTargetTemperature] = useState("");
+  const [temperatureUnit, setTemperatureUnit] = useState("");
   const [fanLevel, setFanLevel] = useState("");
   const [swing, setSwing] = useState("");
+  const [light, setLight] = useState("");
+  const [changedProperties, setChangedProperties] = useState("");
+  const [reason, setReason] = useState("");
   const [failureReason, setFailureReason] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const [buttonColor, setButtonColor] = useState(300);
 
   useEffect(() => {
     isMounted.current = true;
@@ -64,21 +70,22 @@ export default function SensiboCard(props) {
 
   const loadACData = async (id) => {
     try {
-      console.log(id);
       const ACDataArray = await getACData(id);
       // console.log(userACs);
       console.log(ACDataArray);
-
-      if (success === "Success") console.log("yey");
-      //       setFailureReason();
-      // setOn();
-      // setMode();
-      // setTargetTemperature();
-      // setFanLevel();
-      // setSwing();
-
-      // var result = acData.map((acData) => acData.acState);
-      // console.log(acData);
+      setACData(ACDataArray);
+      setStatus(ACDataArray.status);
+      setOnStatus(ACDataArray.on);
+      console.log(onStatus);
+      setMode(ACDataArray.mode);
+      setTargetTemperature(ACDataArray.targetTemperature);
+      setTemperatureUnit(ACDataArray.temperatureUnit);
+      setFanLevel(ACDataArray.fanLevel);
+      setSwing(ACDataArray.swing);
+      setLight(ACDataArray.light);
+      setChangedProperties(ACDataArray.changedProperties);
+      setReason(ACDataArray.reason);
+      setFailureReason(ACDataArray.failureReason);
     } catch (error) {
       alert(error);
     }
@@ -118,10 +125,10 @@ export default function SensiboCard(props) {
           direction="row"
           justifyContent="center"
           alignItems="center">
-          <IconButton sx={{ mx: "auto" }}>
+          <IconButton disabled={disabled} sx={{ mx: "auto" }}>
             <RemoveCircleOutlineIcon
               fontSize="large"
-              sx={{ color: blue[500] }}></RemoveCircleOutlineIcon>
+              sx={{ color: blue[{ buttonColor }] }}></RemoveCircleOutlineIcon>
           </IconButton>
 
           <IconButton sx={{ mx: "auto", bgcolor: blue[500] }}>
@@ -159,13 +166,18 @@ export default function SensiboCard(props) {
 
           <IconButton sx={{ mx: "auto" }} aria-label="mode">
             <div>
-              {mode == "cool" && (
+              {onStatus == true && (
+                <Icon
+                  icon="fa-solid:power-off"
+                  style={{ color: "green", fontSize: "36px" }}
+                />
+              )}
+              {onStatus == false && (
                 <Icon
                   icon="fa-solid:power-off"
                   style={{ color: "red", fontSize: "36px" }}
                 />
               )}
-              {/* <Icon icon="mdi:fan-auto" /> */}
             </div>
           </IconButton>
         </Grid>
@@ -191,15 +203,22 @@ export default function SensiboCard(props) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>Additional text:</Typography>
+          <Typography paragraph>Status: {status}</Typography>
+          {onStatus && <Typography paragraph>On: true</Typography>}
+          {!onStatus && <Typography paragraph>On: false</Typography>}
+          <Typography paragraph>Mode: {mode}</Typography>
           <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            Target temperature: {targetTemperature}
           </Typography>
+          <Typography paragraph>Temperature unit: {temperatureUnit}</Typography>
+          <Typography paragraph>Fan level: {fanLevel}</Typography>
+          <Typography paragraph>Swing: {swing}</Typography>
+          <Typography paragraph>Light: {light}</Typography>
+          <Typography paragraph>
+            Changed properties: {changedProperties}
+          </Typography>
+          <Typography paragraph>Reason: {reason}</Typography>
+          <Typography paragraph>Failure reason: {failureReason}</Typography>
         </CardContent>
       </Collapse>
     </Card>
