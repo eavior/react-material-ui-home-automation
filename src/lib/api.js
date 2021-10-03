@@ -53,6 +53,32 @@ export async function getACData(itemId) {
 //   }
 // }
 
+export async function changeAcState(itemId, property, newValue) {
+  console.log(property);
+  console.log(newValue);
+  const response = await axios.patch(
+    BaseUrl + "/pods/" + itemId + "/acStates/" + property + "?apiKey=" + apiKey,
+    { newValue: newValue }
+    // getAuthConfig(token),
+  );
+  console.log(response.data.result);
+  let result = {
+    id: itemId,
+    status: response.data.result.status,
+    on: response.data.result.acState.on,
+    mode: response.data.result.acState.mode,
+    targetTemperature: response.data.result.acState.targetTemperature,
+    temperatureUnit: response.data.result.acState.temperatureUnit,
+    fanLevel: response.data.result.acState.fanLevel,
+    swing: response.data.result.acState.swing,
+    light: response.data.result.acState.light,
+    changedProperties: response.data.result.changedProperties,
+    reason: response.data.result.reason,
+    failureReason: response.data.result.failureReason,
+  };
+  return result;
+}
+
 // One parameter:
 
 // BaseUrl + "/pods/" + itemId + "/acStates/" + parameter + "?apiKey=" + apiKey
