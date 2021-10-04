@@ -89,11 +89,11 @@ const SensiboMain = React.memo((props) => {
           <ThemeProvider theme={theme}>
             <Box
               sx={{
-                p: 1,
+                p: 5,
                 bgcolor: "background.default",
                 display: "grid",
                 gridTemplateColumns: { md: "1fr 1fr" },
-                gap: 2,
+                gap: 5,
               }}>
               {ACList.map((item) => (
                 <SensiboCard key={item} id={item}></SensiboCard>

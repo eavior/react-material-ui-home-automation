@@ -1,6 +1,7 @@
 import axios from "axios";
 require("dotenv").config();
 
+// const apiKey = process.env.REACT_APP_API_KEY;
 const apiKey = process.env.REACT_APP_API_KEY;
 
 // const BaseUrl = 'http://127.0.0.1:5500';
@@ -78,6 +79,64 @@ export async function changeAcState(itemId, property, newValue) {
   };
   return result;
 }
+
+const test = {
+  status: "success",
+  result: {
+    temperature: [
+      {
+        time: "2021-10-04T10:24:50Z",
+        value: 24.9,
+      },
+      {
+        time: "2021-10-04T10:26:20Z",
+        value: 24.9,
+      },
+      {
+        time: "2021-10-04T10:27:50Z",
+        value: 24.8,
+      },
+      {
+        time: "2021-10-04T10:29:20Z",
+        value: 24.8,
+      },
+      {
+        time: "2021-10-04T10:30:50Z",
+        value: 24.8,
+      },
+      {
+        time: "2021-10-04T10:32:20Z",
+        value: 24.8,
+      },
+      {
+        time: "2021-10-04T10:33:50Z",
+        value: 24.8,
+      },
+    ],
+    humidity: [
+      {
+        time: "2021-10-03T00:00:12Z",
+        value: 52.1,
+      },
+      {
+        time: "2021-10-03T00:01:42Z",
+        value: 52.1,
+      },
+      {
+        time: "2021-10-03T00:03:12Z",
+        value: 52.2,
+      },
+      {
+        time: "2021-10-03T00:04:42Z",
+        value: 52.2,
+      },
+      {
+        time: "2021-10-03T00:06:12Z",
+        value: 52.2,
+      },
+    ],
+  },
+};
 
 // One parameter:
 

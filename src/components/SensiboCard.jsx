@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import {
   deepOrange,
+  yellow,
   orange,
   green,
   blue,
@@ -54,11 +55,20 @@ const theme = createTheme({
       fontSize: 20,
     },
   },
+  yellowPaper: {
+    backgroundColor: orange[300],
+  },
 
   palette: {
     primary: {
       main: green[400],
+      backgroundColor: orange[400],
+      color: grey[100],
+      "&:hover": {
+        backgroundColor: "#FF9A3E",
+      },
     },
+
     secondary: {
       main: orange[500],
     },
@@ -73,6 +83,9 @@ const theme = createTheme({
     },
     green: {
       main: green[100],
+    },
+    background: {
+      main: green[500],
     },
   },
 
@@ -242,7 +255,16 @@ export default function SensiboCard(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Card sx={{ minWidth: 300, maxWidth: 300 }}>
+      <Card
+        sx={{
+          minWidth: 300,
+          maxWidth: 300,
+          bgcolor: yellow[100],
+          borderRadius: 5,
+        }}
+        color="primary"
+        elevation={10}
+        square="false">
         <CardHeader
           // avatar={
           //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -281,13 +303,33 @@ export default function SensiboCard(props) {
                 color={buttonColor || "blue"}></RemoveCircleOutlineIcon>
             </IconButton>
 
-            <IconButton sx={{ mx: "auto", bgcolor: blue[500] }}>
-              <Avatar sx={{ bgcolor: blue[500] }}>
+            {!buttonColor && (
+              <Avatar
+                sx={{
+                  mx: "auto",
+                  fontSize: "20px",
+                  width: 56,
+                  height: 56,
+                  bgcolor: blue[200],
+                }}>
                 <div>
                   {targetTemperature}&#176;{temperatureUnit}
                 </div>
               </Avatar>
-            </IconButton>
+            )}
+
+            {buttonColor && (
+              <Avatar
+                sx={{
+                  mx: "auto",
+                  fontSize: "20px",
+                  width: 56,
+                  height: 56,
+                  bgcolor: buttonColor,
+                }}>
+                <div>Off</div>
+              </Avatar>
+            )}
 
             <IconButton
               disabled={disabled}
@@ -408,17 +450,15 @@ export default function SensiboCard(props) {
               </div>
             </IconButton>
           </Grid>
-          <Typography variant="body2" color="text.secondary">
-            Additional text.
-          </Typography>
+          <Typography variant="body2" color="text.secondary"></Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
+          {/* <IconButton aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
           <IconButton aria-label="share">
             <ShareIcon />
-          </IconButton>
+          </IconButton> */}
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}
@@ -428,8 +468,13 @@ export default function SensiboCard(props) {
           </ExpandMore>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Additional text:</Typography>
+          <CardContent sx={{ bgcolor: grey[100], textAlign: "left" }}>
+            {/* <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"> */}
+            <Typography paragraph>Additional data:</Typography>
             <Typography paragraph>Status: {status}</Typography>
             {onStatus && <Typography paragraph>On: true</Typography>}
             {!onStatus && <Typography paragraph>On: false</Typography>}
@@ -448,6 +493,7 @@ export default function SensiboCard(props) {
             </Typography>
             <Typography paragraph>Reason: {reason}</Typography>
             <Typography paragraph>Failure reason: {failureReason}</Typography>
+            {/* </Grid> */}
           </CardContent>
         </Collapse>
       </Card>
