@@ -1,8 +1,8 @@
-import logo from "./logo.svg";
 import React from "react";
 import "./App.css";
 import SensiboMain from "./components/SensiboMain";
 import Welcome from "./components/Welcome";
+import { grey } from "@mui/material/colors";
 
 const App = () => {
   const [APIKey, setAPIKey] = React.useState(
@@ -15,16 +15,14 @@ const App = () => {
 
   const editAPIKey = (newAPIKey) => setAPIKey(newAPIKey);
 
-  console.log(APIKey);
-
   return (
-    <div className="App">
+    <div
+      className="App"
+      sx={{
+        bgcolor: grey[500],
+      }}>
       <header className="App-header">
-        {APIKey && (
-          <SensiboMain
-            APIKey={APIKey}
-            onEditAPIKey={(newAPIKey) => editAPIKey(newAPIKey)}></SensiboMain>
-        )}
+        {APIKey && <SensiboMain APIKey={APIKey}></SensiboMain>}
         {!APIKey && (
           <Welcome onEditAPIKey={(newAPIKey) => editAPIKey(newAPIKey)} />
         )}

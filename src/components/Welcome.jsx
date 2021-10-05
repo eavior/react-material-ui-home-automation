@@ -2,10 +2,16 @@ import React from "react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import AddIcon from "@mui/icons-material/Add";
+import SaveIcon from "@mui/icons-material/Save";
+import { grey } from "@mui/material/colors";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import { Icon } from "@iconify/react";
 
 const Welcome = (props) => {
-  const { onEditAPIKey } = props;
   const [value, setValue] = React.useState("");
 
   const onChange = (e) => {
@@ -15,39 +21,159 @@ const Welcome = (props) => {
   const onSubmit = (e) => {
     const { onEditAPIKey } = props;
     onEditAPIKey(value);
-    console.log("submit done: " + value);
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Stack direction="column" spacing={2}>
-          <item>
-            <h3>Welcome to the first test version of this app!</h3>
-            <h5>
-              {" "}
-              To start controlling your airconditioners, please enter your
-              Sensibo API key here:
-            </h5>
-          </item>
-          <item>
-            <TextField
-              id="APIKey"
-              variant="outlined"
-              onChange={(e) => onChange(e)}
-            />
-          </item>
-          <item>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={(e) => onSubmit(e)}>
-              Add
-            </Button>
-          </item>
-        </Stack>
-      </header>
-    </div>
+    <Stack
+      direction="column"
+      spacing={2}
+      sx={{
+        color: "#000",
+        bgcolor: grey[100],
+        borderRadius: 5,
+        m: 5,
+        p: 5,
+      }}>
+      <div>
+        <h3>Welcome to the first test version of this app!</h3>
+        <p>
+          To start controlling your airconditioner(s), please enter your Sensibo
+          API key here:
+        </p>
+      </div>
+
+      <div>
+        <TextField
+          id="APIKey"
+          variant="outlined"
+          label="API Key"
+          sx={{
+            color: grey[100],
+            minWidth: 350,
+            m: 1,
+          }}
+          onChange={(e) => onChange(e)}
+        />
+        <TextField
+          id="TestKey"
+          variant="outlined"
+          label="Test code - to connect with Elisha's office AC"
+          sx={{
+            color: grey[100],
+            minWidth: 350,
+            m: 1,
+          }}
+          onChange={(e) => onChange(e)}
+        />
+      </div>
+      <div>
+        <Button
+          variant="contained"
+          sx={{
+            m: 1,
+          }}
+          size="small"
+          startIcon={<SaveIcon />}
+          onClick={(e) => onSubmit(e)}>
+          Save for this session
+        </Button>
+      </div>
+
+      <div>
+        <div>Please note that this is only a test version!</div>
+        <div>The following features are planned for future versions:</div>
+      </div>
+      <div>
+        <List
+          sx={{
+            // textAlign: "center",
+            width: "100%",
+            mx: "auto",
+            // maxWidth: 360,
+            // bgcolor: "background.paper",
+          }}
+          aria-label="contacts">
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText primary="Account creation (email/Google/Apple/Facebook)" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText
+                primary="Back end server + MongoDB database to save all relevant data (like API key, 
+              account data, 'friendly' AC names, data history)"
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText primary="Climate react control (including disabling climate control when turned off)" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText primary="Graphs" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText primary="Schedules" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText primary="Enabling/disabling climate react by schedule" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText primary="Keeping the room temperature to a constant temperature" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText
+                primary="Setting a night mode (different temperature than during the
+            day)"
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText primary="Connection to movement sensors" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </div>
+    </Stack>
   );
 };
 

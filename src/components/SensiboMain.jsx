@@ -1,75 +1,55 @@
 import * as React from "react";
+import { useCallback } from "react";
 import { useEffect, useState, useRef } from "react";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SensiboCard from "./SensiboCard";
 import { getUserACs, getACData } from "../lib/api";
+import { grey } from "@mui/material/colors";
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: "60px",
-}));
+const lightTheme = createTheme({
+  palette: { mode: "light", backgroundColor: grey[500] },
+});
 
-const data = [];
-
-const darkTheme = createTheme({ palette: { mode: "dark" } });
-const lightTheme = createTheme({ palette: { mode: "light" } });
-
-// const Greeting = React.memo((props) => {
-//   console.log("Greeting Comp render");
-//   return <h1>Hi {props.name}!</h1>;
-// });
-
-// const Greeting = (props) => {
-//   console.log("Greeting Comp render");
-//   return <h1>Hi {props.name}!</h1>;
-// };
-
-const SensiboMain = React.memo((props) => {
+const SensiboMain = (props) => {
+  const { APIKey } = props;
   const isMounted = useRef(false);
   const [ACList, setACList] = useState([]);
-  const [ACList2, setACList2] = useState([1]);
+
+  const loadACs = useCallback(() => {
+    return getUserACs(APIKey)
+      .then((response) => {
+        return response.map((item) => item.id);
+      })
+      .then((data) => {
+        setACList(data);
+      })
+      .then((data) => {
+        createAcData(data, APIKey);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, [APIKey]);
 
   useEffect(() => {
     isMounted.current = true;
-    loadACs();
-
+    loadACs(APIKey);
     return () => {
       isMounted.current = false;
     };
-  }, []);
+  }, [APIKey, loadACs]);
 
-  const loadACs = async () => {
-    try {
-      const userACs = await getUserACs();
-      const AcList = await userACs.map((item) => item.id);
-      setACList(AcList);
-      await createAcData();
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  const createAcData = async () => {
+  const createAcData = async (data, APIKey) => {
     try {
       let newArray = [];
-      console.log(ACList.length);
-      if (ACList.length > 0) {
-        ACList.forEach(async function (item) {
-          const response2 = await getACData(item);
-          // console.log(response2);
-
+      if (data && data.length > 0) {
+        data.forEach(async function (item) {
+          const response2 = await getACData(APIKey, item);
           newArray.push(response2);
         });
       }
-      console.log(newArray);
-      setACList2(newArray);
-      console.log(newArray);
     } catch (error) {
       alert(error);
     }
@@ -90,13 +70,13 @@ const SensiboMain = React.memo((props) => {
             <Box
               sx={{
                 p: 5,
-                bgcolor: "background.default",
+                bgcolor: "backgroundColor",
                 display: "grid",
                 gridTemplateColumns: { md: "1fr 1fr" },
                 gap: 5,
               }}>
               {ACList.map((item) => (
-                <SensiboCard key={item} id={item}></SensiboCard>
+                <SensiboCard key={item} id={item} APIKey={APIKey}></SensiboCard>
               ))}
             </Box>
           </ThemeProvider>
@@ -104,5 +84,5 @@ const SensiboMain = React.memo((props) => {
       ))}
     </Grid>
   );
-});
+};
 export default SensiboMain;
