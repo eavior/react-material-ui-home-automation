@@ -2,9 +2,9 @@
 
 This home automation project currently allows a user to control Sensibo AC remotes. At this stage, it is usable only for testing purposes (the Sensibo API key is saved for one session only).
 
-This app is created with React and deployed on
+This app is created with React.
 
-Future enhancements that should make it user friendly, include:
+Future enhancements that should make it user-friendly, include:
 
 - account creation (email/Google/Apple/Facebook)
 - back-end server + MongoDB database to save all relevant data (like API key, account data, 'friendly' AC names, data history)
@@ -19,7 +19,7 @@ Future enhancements that should make it user friendly, include:
 
 <br><br>
 
-# I don't have a Sensibo API key...
+# No Sensibo API key?
 
 This is how the app looks like when a Sensibo API key is entered.
 All Sensibo AC remotes connected to that API will show up and will be controllable.
