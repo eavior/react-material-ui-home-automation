@@ -2,16 +2,35 @@ import axios from "axios";
 require("dotenv").config();
 
 // const apiKey = process.env.REACT_APP_API_KEY;
-const BaseUrl = "";
+const BaseUrl = ""; // backend server url
 const SensiboUrl = "https://home.sensibo.com/api/v2";
 
-// export async function getUserACs(userId, token) {
 export async function getUserACs(apiKey) {
   const response = await axios.get(
     SensiboUrl + "/users/me/pods?apiKey=" + apiKey
     // getAuthConfig(token)
   );
   const result = response.data.result;
+  return result;
+}
+
+async function processResponse(itemId, response1, response2) {
+  let result = {
+    id: itemId,
+    status: response1.status,
+    on: response1.acState.on,
+    mode: response1.acState.mode,
+    targetTemperature: response1.acState.targetTemperature,
+    temperatureUnit: response1.acState.temperatureUnit,
+    fanLevel: response1.acState.fanLevel,
+    swing: response1.acState.swing,
+    light: response1.acState.light,
+    changedProperties: response1.changedProperties,
+    reason: response1.reason,
+    failureReason: response1.failureReason,
+    currentTemperature: response2.temperature.pop().value,
+    currentHumidity: response2.humidity.pop().value,
+  };
   return result;
 }
 
@@ -24,27 +43,16 @@ export async function getACData(apiKey, itemId) {
     SensiboUrl + "/pods/" + itemId + "/historicalMeasurements?apiKey=" + apiKey
     // getAuthConfig(token)
   );
-  let result = {
-    id: itemId,
-    status: response1.data.result[0].status,
-    on: response1.data.result[0].acState.on,
-    mode: response1.data.result[0].acState.mode,
-    targetTemperature: response1.data.result[0].acState.targetTemperature,
-    temperatureUnit: response1.data.result[0].acState.temperatureUnit,
-    fanLevel: response1.data.result[0].acState.fanLevel,
-    swing: response1.data.result[0].acState.swing,
-    light: response1.data.result[0].acState.light,
-    changedProperties: response1.data.result[0].changedProperties,
-    reason: response1.data.result[0].reason,
-    failureReason: response1.data.result[0].failureReason,
-    currentTemperature: response2.data.result.temperature.pop().value,
-    currentHumidity: response2.data.result.humidity.pop().value,
-  };
+  const result = processResponse(
+    itemId,
+    response1.data.result[0],
+    response2.data.result
+  );
   return result;
 }
 
-export async function changeAcState(apiKey, itemId, property, newValue) {
-  const response = await axios.patch(
+export async function changeACState(apiKey, itemId, property, newValue) {
+  const response1 = await axios.patch(
     SensiboUrl +
       "/pods/" +
       itemId +
@@ -59,22 +67,11 @@ export async function changeAcState(apiKey, itemId, property, newValue) {
     SensiboUrl + "/pods/" + itemId + "/historicalMeasurements?apiKey=" + apiKey
     // getAuthConfig(token)
   );
-  let result = {
-    id: itemId,
-    status: response.data.result.status,
-    on: response.data.result.acState.on,
-    mode: response.data.result.acState.mode,
-    targetTemperature: response.data.result.acState.targetTemperature,
-    temperatureUnit: response.data.result.acState.temperatureUnit,
-    fanLevel: response.data.result.acState.fanLevel,
-    swing: response.data.result.acState.swing,
-    light: response.data.result.acState.light,
-    changedProperties: response.data.result.changedProperties,
-    reason: response.data.result.reason,
-    failureReason: response.data.result.failureReason,
-    currentTemperature: response2.data.result.temperature.pop().value,
-    currentHumidity: response2.data.result.humidity.pop().value,
-  };
+  const result = processResponse(
+    itemId,
+    response1.data.result,
+    response2.data.result
+  );
   return result;
 }
 

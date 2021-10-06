@@ -54,7 +54,7 @@ const Welcome = (props) => {
           }}
           onChange={(e) => onChange(e)}
         />
-        <TextField
+        {/* <TextField
           id="TestKey"
           variant="outlined"
           label="Test code - to connect with Elisha's office AC"
@@ -64,7 +64,7 @@ const Welcome = (props) => {
             m: 1,
           }}
           onChange={(e) => onChange(e)}
-        />
+        /> */}
       </div>
       <div>
         <Button
@@ -86,11 +86,8 @@ const Welcome = (props) => {
       <div>
         <List
           sx={{
-            // textAlign: "center",
             width: "100%",
             mx: "auto",
-            // maxWidth: 360,
-            // bgcolor: "background.paper",
           }}
           aria-label="contacts">
           <ListItem disablePadding>
@@ -98,7 +95,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText primary="Account creation (email/Google/Apple/Facebook)" />
+              <ListItemText primary="account creation (email/Google/Apple/Facebook)" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -106,10 +103,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText
-                primary="Back end server + MongoDB database to save all relevant data (like API key, 
-              account data, 'friendly' AC names, data history)"
-              />
+              <ListItemText primary="back-end server + MongoDB database to save all relevant data (like API key, account data, 'friendly' AC names, data history)" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -117,7 +111,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText primary="Climate react control (including disabling climate control when turned off)" />
+              <ListItemText primary="'climate react' control (including disabling 'climate react' when the AC is turned off by a user or by a scheduler)" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -125,7 +119,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText primary="Graphs" />
+              <ListItemText primary="graphs" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -133,7 +127,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText primary="Schedules" />
+              <ListItemText primary="schedules" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -141,7 +135,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText primary="Enabling/disabling climate react by schedule" />
+              <ListItemText primary="enabling/disabling 'climate react' by schedule" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -149,7 +143,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText primary="Keeping the room temperature to a constant temperature" />
+              <ListItemText primary="maintain a constant room temperature (by making use of fan speed, target temperature etc. instead of Sensibo's 'climate react')" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -157,10 +151,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText
-                primary="Setting a night mode (different temperature than during the
-            day)"
-              />
+              <ListItemText primary="setting a night mode (higher temperature than during the day)" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -168,7 +159,15 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText primary="Connection to movement sensors" />
+              <ListItemText primary="connection to movement sensors" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon icon="icons8:idea" />
+              </ListItemIcon>
+              <ListItemText primary="inclusion of other home automation products" />
             </ListItemButton>
           </ListItem>
         </List>

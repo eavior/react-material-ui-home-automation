@@ -16,7 +16,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Icon } from "@iconify/react";
 import Grid from "@mui/material/Grid";
-import { getACData, changeAcState } from "../lib/api";
+import { getACData, changeACState } from "../lib/api";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -30,18 +30,12 @@ const ExpandMore = styled((props) => {
 }));
 
 const theme = createTheme({
-  typography: {
-    h1: {
-      fontSize: 20,
-    },
-  },
   palette: {
     primary: {
       main: grey[400],
       backgroundColor: "#FFF",
       color: grey[900],
     },
-
     secondary: {
       main: orange[500],
     },
@@ -58,12 +52,30 @@ const theme = createTheme({
       main: green[100],
     },
   },
+  components: {
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          h1: "h2",
+          h2: "h2",
+          h3: "h2",
+          h4: "h2",
+          h5: "h2",
+          h6: "h2",
+          subtitle1: "h2",
+          subtitle2: "h2",
+          body1: "span",
+          body2: "span",
+        },
+      },
+    },
+  },
 });
 
 export default function SensiboCard(props) {
   const { id, APIKey } = props;
   const isMounted = useRef(false);
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [status, setStatus] = useState("empty");
   const [onStatus, setOnStatus] = useState(false);
   const [mode, setMode] = useState("");
@@ -126,7 +138,7 @@ export default function SensiboCard(props) {
 
   const handlePowerButton = async () => {
     try {
-      const ACDataArray = await changeAcState(APIKey, id, "on", !onStatus);
+      const ACDataArray = await changeACState(APIKey, id, "on", !onStatus);
       updateValues(ACDataArray);
     } catch (error) {
       alert(error);
@@ -141,7 +153,7 @@ export default function SensiboCard(props) {
         if (change === "plus") newTemp += 1;
         return newTemp;
       }
-      const ACDataArray = await changeAcState(
+      const ACDataArray = await changeACState(
         APIKey,
         id,
         "targetTemperature",
@@ -178,7 +190,7 @@ export default function SensiboCard(props) {
         }
         return newMode;
       }
-      const ACDataArray = await changeAcState(
+      const ACDataArray = await changeACState(
         APIKey,
         id,
         "mode",
@@ -212,7 +224,7 @@ export default function SensiboCard(props) {
         }
         return newFanLevel;
       }
-      const ACDataArray = await changeAcState(
+      const ACDataArray = await changeACState(
         APIKey,
         id,
         "fanLevel",
@@ -251,15 +263,17 @@ export default function SensiboCard(props) {
             direction="row"
             justifyContent="center"
             alignItems="center">
-            <IconButton
-              disabled={disabled}
-              sx={{ mx: "auto" }}
-              onClick={() => handleTemperatureChange("min")}>
-              <RemoveCircleOutlineIcon
-                fontSize="large"
-                color={buttonColor || "blue"}></RemoveCircleOutlineIcon>
-            </IconButton>
-            {!buttonColor && (
+            {targetTemperature && (
+              <IconButton
+                disabled={disabled}
+                sx={{ mx: "auto" }}
+                onClick={() => handleTemperatureChange("min")}>
+                <RemoveCircleOutlineIcon
+                  fontSize="large"
+                  color={buttonColor || "blue"}></RemoveCircleOutlineIcon>
+              </IconButton>
+            )}
+            {!buttonColor && mode !== "heat" && (
               <Avatar
                 sx={{
                   mx: "auto",
@@ -268,9 +282,34 @@ export default function SensiboCard(props) {
                   height: 56,
                   bgcolor: blue[300],
                 }}>
-                <div>
-                  {targetTemperature}&#176;{temperatureUnit}
-                </div>
+                {targetTemperature && (
+                  <div>
+                    {targetTemperature}&#176;{temperatureUnit}
+                  </div>
+                )}
+                {mode === "fan" && (
+                  <Icon
+                    icon="wpf:fan"
+                    style={{ fontSize: "30px" }}
+                    color="#FFF"
+                  />
+                )}
+              </Avatar>
+            )}
+            {!buttonColor && mode === "heat" && (
+              <Avatar
+                sx={{
+                  mx: "auto",
+                  fontSize: "20px",
+                  width: 56,
+                  height: 56,
+                  bgcolor: red[300],
+                }}>
+                {targetTemperature && (
+                  <div>
+                    {targetTemperature}&#176;{temperatureUnit}
+                  </div>
+                )}
               </Avatar>
             )}
             {buttonColor && (
@@ -285,14 +324,16 @@ export default function SensiboCard(props) {
                 <div>Off</div>
               </Avatar>
             )}
-            <IconButton
-              disabled={disabled}
-              sx={{ mx: "auto" }}
-              onClick={() => handleTemperatureChange("plus")}>
-              <AddCircleOutlineIcon
-                fontSize="large"
-                color={buttonColor || "red"}></AddCircleOutlineIcon>
-            </IconButton>
+            {targetTemperature && (
+              <IconButton
+                disabled={disabled}
+                sx={{ mx: "auto" }}
+                onClick={() => handleTemperatureChange("plus")}>
+                <AddCircleOutlineIcon
+                  fontSize="large"
+                  color={buttonColor || "red"}></AddCircleOutlineIcon>
+              </IconButton>
+            )}
           </Grid>
         </CardContent>
         <CardContent>
@@ -352,42 +393,52 @@ export default function SensiboCard(props) {
                 )}
               </div>
             </IconButton>
-            <IconButton
-              disabled={disabled}
-              sx={{ mx: "auto" }}
-              aria-label="mode"
-              onClick={() => handleFanSpeedChange(fanLevel)}>
-              <div>
-                {fanLevel === "low" && (
-                  <Icon
-                    icon="mdi:fan-speed-1"
-                    style={{ fontSize: "36px" }}
-                    color={buttonColor || "grey"}
-                  />
-                )}
-                {fanLevel === "medium" && (
-                  <Icon
-                    icon="mdi:fan-speed-2"
-                    style={{ fontSize: "36px" }}
-                    color={buttonColor || "grey"}
-                  />
-                )}
-                {fanLevel === "high" && (
-                  <Icon
-                    icon="mdi:fan-speed-3"
-                    style={{ fontSize: "36px" }}
-                    color={buttonColor || "grey"}
-                  />
-                )}
-                {fanLevel === "auto" && (
-                  <Icon
-                    icon="mdi:fan-auto"
-                    style={{ fontSize: "36px" }}
-                    color={buttonColor || "grey"}
-                  />
-                )}
-              </div>
-            </IconButton>
+            {fanLevel && (
+              <IconButton
+                disabled={disabled}
+                sx={{ mx: "auto" }}
+                aria-label="mode"
+                onClick={() => handleFanSpeedChange(fanLevel)}>
+                <div>
+                  {fanLevel === "low" && (
+                    <Icon
+                      icon="mdi:fan-speed-1"
+                      style={{ fontSize: "36px" }}
+                      color={buttonColor || "grey"}
+                    />
+                  )}
+                  {fanLevel === "medium" && (
+                    <Icon
+                      icon="mdi:fan-speed-2"
+                      style={{ fontSize: "36px" }}
+                      color={buttonColor || "grey"}
+                    />
+                  )}
+                  {fanLevel === "high" && (
+                    <Icon
+                      icon="mdi:fan-speed-3"
+                      style={{ fontSize: "36px" }}
+                      color={buttonColor || "grey"}
+                    />
+                  )}
+                  {fanLevel === "auto" && (
+                    <Icon
+                      icon="mdi:fan-auto"
+                      style={{ fontSize: "36px" }}
+                      color={buttonColor || "grey"}
+                    />
+                  )}
+                </div>
+              </IconButton>
+            )}
+            {!fanLevel && (
+              <IconButton disabled sx={{ mx: "auto" }} aria-label="mode">
+                <div>
+                  <Icon icon="mdi:fan" style={{ fontSize: "36px" }} />
+                </div>
+              </IconButton>
+            )}
+
             <IconButton
               sx={{ mx: "auto" }}
               aria-label="mode"
@@ -430,7 +481,7 @@ export default function SensiboCard(props) {
             <Typography paragraph>
               Data that the Sensibo API provides:
             </Typography>
-            <Typography>
+            <Typography variant="body1">
               <ul>
                 <li>Status: {status}</li>
                 {onStatus && <li>On: true</li>}

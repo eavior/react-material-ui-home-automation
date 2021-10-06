@@ -26,7 +26,7 @@ const SensiboMain = (props) => {
         setACList(data);
       })
       .then((data) => {
-        createAcData(data, APIKey);
+        createACData(data, APIKey);
       })
       .catch((error) => {
         alert(error);
@@ -41,7 +41,7 @@ const SensiboMain = (props) => {
     };
   }, [APIKey, loadACs]);
 
-  const createAcData = async (data, APIKey) => {
+  const createACData = async (data, APIKey) => {
     try {
       let newArray = [];
       if (data && data.length > 0) {
@@ -60,7 +60,7 @@ const SensiboMain = (props) => {
       {[lightTheme].map((theme, index) => (
         <Grid
           item
-          xs={12}
+          // xs={12}
           key={index}
           container
           direction="row"
