@@ -8,13 +8,13 @@ const standardHeader = {
   headers: {
     accept: "*/*",
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
   },
 };
 
 export async function getUserACs(apiKey) {
   const response = await axios.get(
     sensiboUrl + "/users/me/pods?apiKey=" + apiKey,
-    { "Access-Control-Allow-Origin": "*" },
     standardHeader
     // getAuthConfig(token)
   );

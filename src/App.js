@@ -22,7 +22,7 @@ const App = () => {
         bgcolor: grey[500],
       }}>
       <header className="App-header">
-        4{APIKey && <SensiboMain APIKey={APIKey}></SensiboMain>}
+        {APIKey && <SensiboMain APIKey={APIKey}></SensiboMain>}
         {!APIKey && (
           <Welcome onEditAPIKey={(newAPIKey) => editAPIKey(newAPIKey)} />
         )}
