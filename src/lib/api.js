@@ -2,12 +2,19 @@ import axios from "axios";
 require("dotenv").config();
 
 // const apiKey = process.env.REACT_APP_API_KEY;
-const BaseUrl = ""; // backend server url
-const SensiboUrl = "https://home.sensibo.com/api/v2";
+const baseUrl = ""; // backend server url
+const sensiboUrl = "https://home.sensibo.com/api/v2";
+const standardHeader = {
+  headers: {
+    accept: "*/*",
+    "Content-Type": "application/json",
+  },
+};
 
 export async function getUserACs(apiKey) {
   const response = await axios.get(
-    SensiboUrl + "/users/me/pods?apiKey=" + apiKey
+    sensiboUrl + "/users/me/pods?apiKey=" + apiKey,
+    standardHeader
     // getAuthConfig(token)
   );
   const result = response.data.result;
@@ -36,11 +43,13 @@ async function processResponse(itemId, response1, response2) {
 
 export async function getACData(apiKey, itemId) {
   const response1 = await axios.get(
-    SensiboUrl + "/pods/" + itemId + "/acStates?limit=1&apiKey=" + apiKey
+    sensiboUrl + "/pods/" + itemId + "/acStates?limit=1&apiKey=" + apiKey,
+    standardHeader
     // getAuthConfig(token)
   );
   const response2 = await axios.get(
-    SensiboUrl + "/pods/" + itemId + "/historicalMeasurements?apiKey=" + apiKey
+    sensiboUrl + "/pods/" + itemId + "/historicalMeasurements?apiKey=" + apiKey,
+    standardHeader
     // getAuthConfig(token)
   );
   const result = processResponse(
@@ -53,18 +62,25 @@ export async function getACData(apiKey, itemId) {
 
 export async function changeACState(apiKey, itemId, property, newValue) {
   const response1 = await axios.patch(
-    SensiboUrl +
+    sensiboUrl +
       "/pods/" +
       itemId +
       "/acStates/" +
       property +
       "?apiKey=" +
       apiKey,
-    { newValue: newValue }
+    {
+      headers: {
+        accept: "*/*",
+        "Content-Type": "application/json",
+      },
+      newValue: newValue,
+    }
     // getAuthConfig(token),
   );
   const response2 = await axios.get(
-    SensiboUrl + "/pods/" + itemId + "/historicalMeasurements?apiKey=" + apiKey
+    sensiboUrl + "/pods/" + itemId + "/historicalMeasurements?apiKey=" + apiKey,
+    standardHeader
     // getAuthConfig(token)
   );
   const result = processResponse(
@@ -84,18 +100,18 @@ function getAuthConfig(token) {
 }
 
 export async function signUp(signUpData) {
-  const response = await axios.post(`${BaseUrl}/signup`, signUpData);
+  const response = await axios.post(`${baseUrl}/signup`, signUpData);
   return response.data;
 }
 
 export async function login(loginData) {
-  const response = await axios.post(`${BaseUrl}/login`, loginData);
+  const response = await axios.post(`${baseUrl}/login`, loginData);
   return response.data;
 }
 
 export async function createAPIkey(newAPIKey, token) {
   const response = await axios.post(
-    `${BaseUrl}/AC`,
+    `${baseUrl}/AC`,
     newAPIKey,
     getAuthConfig(token)
   );
@@ -104,7 +120,7 @@ export async function createAPIkey(newAPIKey, token) {
 
 export async function createImage(newImage, token) {
   const response = await axios.post(
-    `${BaseUrl}/AC/picture_url`,
+    `${baseUrl}/AC/picture_url`,
     newImage,
     getAuthConfig(token),
     {

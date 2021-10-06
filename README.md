@@ -2,7 +2,10 @@
 
 This home automation project currently allows a user to control Sensibo AC remotes. At this stage, it is usable only for testing purposes (the Sensibo API key is saved for one session only).
 
-This app is created with React.
+This app is created with React, deployed on [Netlify][identifier] with <https://sensibo.avior.online> as custom domain.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/79e0fee7-1162-46a4-9e9e-ea5876deac74/deploy-status)](https://app.netlify.com/sites/home-automation-app/deploys)
+
+[identifier]: https://home-automation-app.netlify.app
 
 Future enhancements that should make it user-friendly, include:
 
