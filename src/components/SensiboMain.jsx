@@ -20,9 +20,9 @@ const SensiboMain = (props) => {
   const loadACs = useCallback(() => {
     return getUserACs(APIKey)
       .then((response) => {
-        if (!response) {
-          throw "Please refresh the page, and enter a valid API key";
-        }
+        // if (!response) {
+        //   throw "Please refresh the page, and enter a valid API key";
+        // }
         return response.map((item) => item.id);
       })
       .then((data) => {
