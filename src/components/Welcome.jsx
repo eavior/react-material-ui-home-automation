@@ -103,7 +103,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText primary="back-end server + MongoDB database to save all relevant data (like API key, account data, 'friendly' AC names, data history)" />
+              <ListItemText primary="further development of the back-end server (saving all relevant data like API key, account data, 'friendly' AC names, data history in MongoDB; correctly dealing with exceptions/errors; creation of a new server in Python to improve my Python skills)" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
