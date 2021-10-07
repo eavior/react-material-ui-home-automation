@@ -2,94 +2,51 @@ import axios from "axios";
 require("dotenv").config();
 
 // const apiKey = process.env.REACT_APP_API_KEY;
-const baseUrl = ""; // backend server url
-const sensiboUrl = "https://home.sensibo.com/api/v2";
-const standardHeader = {
-  headers: {
-    accept: "*/*",
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-  },
-};
+const baseUrl = "https://home-automation-nodejs-server.herokuapp.com"; // backend server url
+// const baseUrl = "http://127.0.0.1:5501"; // backend server url
 
 export async function getUserACs(apiKey) {
-  const response = await axios.get(
-    sensiboUrl + "/users/me/pods?apiKey=" + apiKey,
-    standardHeader
-    // getAuthConfig(token)
-  );
-  const result = response.data.result;
-  return result;
-}
-
-async function processResponse(itemId, response1, response2) {
-  let result = {
-    id: itemId,
-    status: response1.status,
-    on: response1.acState.on,
-    mode: response1.acState.mode,
-    targetTemperature: response1.acState.targetTemperature,
-    temperatureUnit: response1.acState.temperatureUnit,
-    fanLevel: response1.acState.fanLevel,
-    swing: response1.acState.swing,
-    light: response1.acState.light,
-    changedProperties: response1.changedProperties,
-    reason: response1.reason,
-    failureReason: response1.failureReason,
-    currentTemperature: response2.temperature.pop().value,
-    currentHumidity: response2.humidity.pop().value,
-  };
-  return result;
+  try {
+    const response = await axios.get(
+      baseUrl + "/sensibo/me/pods/" + apiKey
+      // standardHeader
+      // getAuthConfig(token)
+    );
+    const result = response.data.sensibo;
+    return result;
+  } catch (error) {
+    alert(error.response.data.sensibo.message);
+  }
 }
 
 export async function getACData(apiKey, itemId) {
-  const response1 = await axios.get(
-    sensiboUrl + "/pods/" + itemId + "/acStates?limit=1&apiKey=" + apiKey,
-    standardHeader
-    // getAuthConfig(token)
-  );
-  const response2 = await axios.get(
-    sensiboUrl + "/pods/" + itemId + "/historicalMeasurements?apiKey=" + apiKey,
-    standardHeader
-    // getAuthConfig(token)
-  );
-  const result = processResponse(
-    itemId,
-    response1.data.result[0],
-    response2.data.result
-  );
-  return result;
+  try {
+    const response = await axios.get(
+      baseUrl + "/sensibo/ac/" + itemId + "/" + apiKey
+      // standardHeader
+      // getAuthConfig(token)
+    );
+    const result = response.data.sensibo;
+    return result;
+  } catch (error) {
+    alert(error.response.data.sensibo.message);
+  }
 }
 
 export async function changeACState(apiKey, itemId, property, newValue) {
-  const response1 = await axios.patch(
-    sensiboUrl +
-      "/pods/" +
-      itemId +
-      "/acStates/" +
-      property +
-      "?apiKey=" +
-      apiKey,
-    {
-      headers: {
-        accept: "*/*",
-        "Content-Type": "application/json",
-      },
-      newValue: newValue,
-    }
-    // getAuthConfig(token),
-  );
-  const response2 = await axios.get(
-    sensiboUrl + "/pods/" + itemId + "/historicalMeasurements?apiKey=" + apiKey,
-    standardHeader
-    // getAuthConfig(token)
-  );
-  const result = processResponse(
-    itemId,
-    response1.data.result,
-    response2.data.result
-  );
-  return result;
+  try {
+    const response = await axios.patch(
+      baseUrl + "/sensibo/ac/" + itemId + "/" + property + "/" + apiKey,
+      {
+        newValue: newValue,
+      }
+      // getAuthConfig(token)
+    );
+    const result = response.data.sensibo;
+    return result;
+  } catch (error) {
+    alert(error.response.data.sensibo.message);
+  }
 }
 
 function getAuthConfig(token) {

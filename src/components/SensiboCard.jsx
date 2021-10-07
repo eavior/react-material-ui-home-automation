@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"; //
 import { useEffect, useState, useRef, useCallback } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -95,7 +95,8 @@ export default function SensiboCard(props) {
   const loadACData = useCallback(() => {
     return getACData(APIKey, id)
       .then((data) => {
-        updateValues(data);
+        if (data) updateValues(data);
+        else if (!data) setStatus("Failed");
       })
       .catch((error) => {
         alert(error);
@@ -257,212 +258,223 @@ export default function SensiboCard(props) {
             </div>
           }
         />
-        <CardContent>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            {targetTemperature && (
-              <IconButton
-                disabled={disabled}
-                sx={{ mx: "auto" }}
-                onClick={() => handleTemperatureChange("min")}>
-                <RemoveCircleOutlineIcon
-                  fontSize="large"
-                  color={buttonColor || "blue"}></RemoveCircleOutlineIcon>
-              </IconButton>
-            )}
-            {!buttonColor && mode !== "heat" && (
-              <Avatar
-                sx={{
-                  mx: "auto",
-                  fontSize: "20px",
-                  width: 56,
-                  height: 56,
-                  bgcolor: blue[300],
-                }}>
+        {status === "Failed" && (
+          <CardContent>
+            Sorry! We ran into an issue:{" "}
+            {failureReason && <span>{failureReason}</span>}
+            {!failureReason && <span>Server error</span>}
+          </CardContent>
+        )}
+        {status === "Success" && (
+          <>
+            <CardContent>
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center">
                 {targetTemperature && (
-                  <div>
-                    {targetTemperature}&#176;{temperatureUnit}
-                  </div>
+                  <IconButton
+                    disabled={disabled}
+                    sx={{ mx: "auto" }}
+                    onClick={() => handleTemperatureChange("min")}>
+                    <RemoveCircleOutlineIcon
+                      fontSize="large"
+                      color={buttonColor || "blue"}></RemoveCircleOutlineIcon>
+                  </IconButton>
                 )}
-                {mode === "fan" && (
-                  <Icon
-                    icon="wpf:fan"
-                    style={{ fontSize: "30px" }}
-                    color="#FFF"
-                  />
+                {!buttonColor && mode !== "heat" && (
+                  <Avatar
+                    sx={{
+                      mx: "auto",
+                      fontSize: "20px",
+                      width: 56,
+                      height: 56,
+                      bgcolor: blue[300],
+                    }}>
+                    {targetTemperature && (
+                      <div>
+                        {targetTemperature}&#176;{temperatureUnit}
+                      </div>
+                    )}
+                    {mode === "fan" && (
+                      <Icon
+                        icon="wpf:fan"
+                        style={{ fontSize: "30px" }}
+                        color="#FFF"
+                      />
+                    )}
+                  </Avatar>
                 )}
-              </Avatar>
-            )}
-            {!buttonColor && mode === "heat" && (
-              <Avatar
-                sx={{
-                  mx: "auto",
-                  fontSize: "20px",
-                  width: 56,
-                  height: 56,
-                  bgcolor: red[300],
-                }}>
+                {!buttonColor && mode === "heat" && (
+                  <Avatar
+                    sx={{
+                      mx: "auto",
+                      fontSize: "20px",
+                      width: 56,
+                      height: 56,
+                      bgcolor: red[300],
+                    }}>
+                    {targetTemperature && (
+                      <div>
+                        {targetTemperature}&#176;{temperatureUnit}
+                      </div>
+                    )}
+                  </Avatar>
+                )}
+                {buttonColor && (
+                  <Avatar
+                    sx={{
+                      mx: "auto",
+                      fontSize: "20px",
+                      width: 56,
+                      height: 56,
+                      bgcolor: buttonColor,
+                    }}>
+                    <div>Off</div>
+                  </Avatar>
+                )}
                 {targetTemperature && (
+                  <IconButton
+                    disabled={disabled}
+                    sx={{ mx: "auto" }}
+                    onClick={() => handleTemperatureChange("plus")}>
+                    <AddCircleOutlineIcon
+                      fontSize="large"
+                      color={buttonColor || "red"}></AddCircleOutlineIcon>
+                  </IconButton>
+                )}
+              </Grid>
+            </CardContent>
+            <CardContent>
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center">
+                <IconButton
+                  disabled={disabled}
+                  sx={{ mx: "auto" }}
+                  aria-label="mode"
+                  onClick={() => handleModeChange(mode)}>
                   <div>
-                    {targetTemperature}&#176;{temperatureUnit}
+                    {mode === "cool" && (
+                      <Icon
+                        icon="ic:baseline-ac-unit"
+                        style={{ fontSize: "36px" }}
+                        color={buttonColor || "grey"}
+                      />
+                    )}
                   </div>
+                  <div>
+                    {mode === "heat" && (
+                      <Icon
+                        icon="carbon:sun"
+                        style={{ fontSize: "36px" }}
+                        color={buttonColor || "grey"}
+                      />
+                    )}
+                  </div>
+                  <div>
+                    {mode === "fan" && (
+                      <Icon
+                        icon="whh:fan"
+                        style={{ fontSize: "36px" }}
+                        color={buttonColor || "grey"}
+                      />
+                    )}
+                  </div>
+                  <div>
+                    {mode === "auto" && (
+                      <Icon
+                        icon="ic:outline-hdr-auto"
+                        style={{ fontSize: "36px" }}
+                        color={buttonColor || "grey"}
+                      />
+                    )}
+                  </div>
+                  <div>
+                    {mode === "dry" && (
+                      <Icon
+                        icon="cil:drop"
+                        style={{ fontSize: "36px" }}
+                        color={buttonColor || "grey"}
+                      />
+                    )}
+                  </div>
+                </IconButton>
+                {fanLevel && (
+                  <IconButton
+                    disabled={disabled}
+                    sx={{ mx: "auto" }}
+                    aria-label="mode"
+                    onClick={() => handleFanSpeedChange(fanLevel)}>
+                    <div>
+                      {fanLevel === "low" && (
+                        <Icon
+                          icon="mdi:fan-speed-1"
+                          style={{ fontSize: "36px" }}
+                          color={buttonColor || "grey"}
+                        />
+                      )}
+                      {fanLevel === "medium" && (
+                        <Icon
+                          icon="mdi:fan-speed-2"
+                          style={{ fontSize: "36px" }}
+                          color={buttonColor || "grey"}
+                        />
+                      )}
+                      {fanLevel === "high" && (
+                        <Icon
+                          icon="mdi:fan-speed-3"
+                          style={{ fontSize: "36px" }}
+                          color={buttonColor || "grey"}
+                        />
+                      )}
+                      {fanLevel === "auto" && (
+                        <Icon
+                          icon="mdi:fan-auto"
+                          style={{ fontSize: "36px" }}
+                          color={buttonColor || "grey"}
+                        />
+                      )}
+                    </div>
+                  </IconButton>
                 )}
-              </Avatar>
-            )}
-            {buttonColor && (
-              <Avatar
-                sx={{
-                  mx: "auto",
-                  fontSize: "20px",
-                  width: 56,
-                  height: 56,
-                  bgcolor: buttonColor,
-                }}>
-                <div>Off</div>
-              </Avatar>
-            )}
-            {targetTemperature && (
-              <IconButton
-                disabled={disabled}
-                sx={{ mx: "auto" }}
-                onClick={() => handleTemperatureChange("plus")}>
-                <AddCircleOutlineIcon
-                  fontSize="large"
-                  color={buttonColor || "red"}></AddCircleOutlineIcon>
-              </IconButton>
-            )}
-          </Grid>
-        </CardContent>
-        <CardContent>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-            <IconButton
-              disabled={disabled}
-              sx={{ mx: "auto" }}
-              aria-label="mode"
-              onClick={() => handleModeChange(mode)}>
-              <div>
-                {mode === "cool" && (
-                  <Icon
-                    icon="ic:baseline-ac-unit"
-                    style={{ fontSize: "36px" }}
-                    color={buttonColor || "grey"}
-                  />
+                {!fanLevel && (
+                  <IconButton disabled sx={{ mx: "auto" }} aria-label="mode">
+                    <div>
+                      <Icon icon="mdi:fan" style={{ fontSize: "36px" }} />
+                    </div>
+                  </IconButton>
                 )}
-              </div>
-              <div>
-                {mode === "heat" && (
-                  <Icon
-                    icon="carbon:sun"
-                    style={{ fontSize: "36px" }}
-                    color={buttonColor || "grey"}
-                  />
-                )}
-              </div>
-              <div>
-                {mode === "fan" && (
-                  <Icon
-                    icon="whh:fan"
-                    style={{ fontSize: "36px" }}
-                    color={buttonColor || "grey"}
-                  />
-                )}
-              </div>
-              <div>
-                {mode === "auto" && (
-                  <Icon
-                    icon="ic:outline-hdr-auto"
-                    style={{ fontSize: "36px" }}
-                    color={buttonColor || "grey"}
-                  />
-                )}
-              </div>
-              <div>
-                {mode === "dry" && (
-                  <Icon
-                    icon="cil:drop"
-                    style={{ fontSize: "36px" }}
-                    color={buttonColor || "grey"}
-                  />
-                )}
-              </div>
-            </IconButton>
-            {fanLevel && (
-              <IconButton
-                disabled={disabled}
-                sx={{ mx: "auto" }}
-                aria-label="mode"
-                onClick={() => handleFanSpeedChange(fanLevel)}>
-                <div>
-                  {fanLevel === "low" && (
-                    <Icon
-                      icon="mdi:fan-speed-1"
-                      style={{ fontSize: "36px" }}
-                      color={buttonColor || "grey"}
-                    />
-                  )}
-                  {fanLevel === "medium" && (
-                    <Icon
-                      icon="mdi:fan-speed-2"
-                      style={{ fontSize: "36px" }}
-                      color={buttonColor || "grey"}
-                    />
-                  )}
-                  {fanLevel === "high" && (
-                    <Icon
-                      icon="mdi:fan-speed-3"
-                      style={{ fontSize: "36px" }}
-                      color={buttonColor || "grey"}
-                    />
-                  )}
-                  {fanLevel === "auto" && (
-                    <Icon
-                      icon="mdi:fan-auto"
-                      style={{ fontSize: "36px" }}
-                      color={buttonColor || "grey"}
-                    />
-                  )}
-                </div>
-              </IconButton>
-            )}
-            {!fanLevel && (
-              <IconButton disabled sx={{ mx: "auto" }} aria-label="mode">
-                <div>
-                  <Icon icon="mdi:fan" style={{ fontSize: "36px" }} />
-                </div>
-              </IconButton>
-            )}
 
-            <IconButton
-              sx={{ mx: "auto" }}
-              aria-label="mode"
-              onClick={handlePowerButton}>
-              <div>
-                {onStatus === true && (
-                  <Icon
-                    icon="fa-solid:power-off"
-                    color="red"
-                    style={{ fontSize: "36px" }}
-                  />
-                )}
-                {onStatus === false && (
-                  <Icon
-                    icon="fa-solid:power-off"
-                    color="green"
-                    style={{ fontSize: "36px" }}
-                  />
-                )}
-              </div>
-            </IconButton>
-          </Grid>
-          <Typography variant="body2" color="text.secondary"></Typography>
-        </CardContent>
+                <IconButton
+                  sx={{ mx: "auto" }}
+                  aria-label="mode"
+                  onClick={handlePowerButton}>
+                  <div>
+                    {onStatus === true && (
+                      <Icon
+                        icon="fa-solid:power-off"
+                        color="red"
+                        style={{ fontSize: "36px" }}
+                      />
+                    )}
+                    {onStatus === false && (
+                      <Icon
+                        icon="fa-solid:power-off"
+                        color="green"
+                        style={{ fontSize: "36px" }}
+                      />
+                    )}
+                  </div>
+                </IconButton>
+              </Grid>
+              <Typography variant="body2" color="text.secondary"></Typography>
+            </CardContent>
+          </>
+        )}
         <CardActions disableSpacing>
           <ExpandMore
             expand={expanded}

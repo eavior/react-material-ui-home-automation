@@ -159,7 +159,7 @@ const Welcome = (props) => {
               <ListItemIcon>
                 <Icon icon="icons8:idea" />
               </ListItemIcon>
-              <ListItemText primary="connection to movement sensors" />
+              <ListItemText primary="connection to movement sensors & Shelly relays (to control fans)" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
