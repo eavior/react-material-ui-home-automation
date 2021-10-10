@@ -7,6 +7,8 @@ This app is created with React, MUI and NodeJS. It is deployed on [Netlify][iden
 
 [identifier]: https://home-automation-app.netlify.app
 
+The back-end server can be found here: https://github.com/eavior/home-automation-nodejs-server
+
 Future enhancements that should make it user-friendly, include:
 
 - account creation (email/Google/Apple/Facebook)
