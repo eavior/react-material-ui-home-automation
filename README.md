@@ -27,6 +27,6 @@ Future enhancements that should make it user-friendly, include:
 # No Sensibo API key?
 
 This is how the app looks like when a Sensibo API key is entered.
-All Sensibo AC remotes connected to that API will show up and will be controllable.
+All Sensibo AC remotes connected to that API key will show up and will be controllable.
 
 ![Sensibo AC remote controls](/public/screenshot.png "Sensibo AC remote controls")
