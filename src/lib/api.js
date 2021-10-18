@@ -2,8 +2,10 @@ import axios from "axios";
 require("dotenv").config();
 
 // const apiKey = process.env.REACT_APP_API_KEY;
-const baseUrl = "https://home-automation-nodejs-server.herokuapp.com"; // backend server url
-// const baseUrl = "http://127.0.0.1:5501"; // backend server url
+// const baseUrl = "http://127.0.0.1:5501";
+const baseUrl = "https://home-automation-nodejs-server.herokuapp.com";
+// const baseUrl =
+//   "http://ec2-18-185-249-86.eu-central-1.compute.amazonaws.com/api";
 
 export async function getUserACs(apiKey) {
   try {
@@ -15,7 +17,8 @@ export async function getUserACs(apiKey) {
     const result = response.data.sensibo;
     return result;
   } catch (error) {
-    alert(error.response.data.sensibo.message);
+    //   alert(error.response.data.sensibo.message);
+    alert(error);
   }
 }
 
@@ -29,14 +32,15 @@ export async function getACData(apiKey, itemId) {
     const result = response.data.sensibo;
     return result;
   } catch (error) {
-    alert(error.response.data.sensibo.message);
+    //   alert(error.response.data.sensibo.message);
+    alert(error);
   }
 }
 
 export async function changeACState(apiKey, itemId, property, newValue) {
   try {
     const response = await axios.patch(
-      baseUrl + "/sensibo/ac/" + itemId + "/" + property + "/" + apiKey,
+      baseUrl + "/sensibo/ac/" + itemId + "/" + property + "/" + apiKey + "/",
       {
         newValue: newValue,
       }
@@ -45,7 +49,8 @@ export async function changeACState(apiKey, itemId, property, newValue) {
     const result = response.data.sensibo;
     return result;
   } catch (error) {
-    alert(error.response.data.sensibo.message);
+    //   alert(error.response.data.sensibo.message);
+    alert(error);
   }
 }
 

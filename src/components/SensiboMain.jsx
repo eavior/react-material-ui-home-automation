@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SensiboCard from "./SensiboCard";
 import { getUserACs, getACData } from "../lib/api";
 import { grey } from "@mui/material/colors";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const lightTheme = createTheme({
   palette: { mode: "light", backgroundColor: grey[500] },
@@ -16,6 +17,7 @@ const SensiboMain = (props) => {
   const { APIKey } = props;
   const isMounted = useRef(false);
   const [ACList, setACList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const loadACs = useCallback(() => {
     return getUserACs(APIKey)
@@ -39,6 +41,7 @@ const SensiboMain = (props) => {
   useEffect(() => {
     isMounted.current = true;
     loadACs(APIKey);
+    setLoading(false);
     return () => {
       isMounted.current = false;
     };
@@ -59,33 +62,41 @@ const SensiboMain = (props) => {
   };
 
   return (
-    <Grid container spacing={2}>
-      {[lightTheme].map((theme, index) => (
-        <Grid
-          item
-          // xs={12}
-          key={index}
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center">
-          <ThemeProvider theme={theme}>
-            <Box
-              sx={{
-                p: 5,
-                bgcolor: "backgroundColor",
-                display: "grid",
-                gridTemplateColumns: { md: "1fr 1fr" },
-                gap: 5,
-              }}>
-              {ACList.map((item) => (
-                <SensiboCard key={item} id={item} APIKey={APIKey}></SensiboCard>
-              ))}
-            </Box>
-          </ThemeProvider>
+    <>
+      {loading && <LoadingButton loading></LoadingButton>}
+      {!loading && (
+        <Grid container spacing={2}>
+          {[lightTheme].map((theme, index) => (
+            <Grid
+              item
+              // xs={12}
+              key={index}
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center">
+              <ThemeProvider theme={theme}>
+                <Box
+                  sx={{
+                    p: 5,
+                    bgcolor: "backgroundColor",
+                    display: "grid",
+                    gridTemplateColumns: { md: "1fr 1fr" },
+                    gap: 5,
+                  }}>
+                  {ACList.map((item) => (
+                    <SensiboCard
+                      key={item}
+                      id={item}
+                      APIKey={APIKey}></SensiboCard>
+                  ))}
+                </Box>
+              </ThemeProvider>
+            </Grid>
+          ))}
         </Grid>
-      ))}
-    </Grid>
+      )}
+    </>
   );
 };
 export default SensiboMain;
