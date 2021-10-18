@@ -7,12 +7,15 @@ This app is created with React, MUI and NodeJS. It is deployed on [Netlify][iden
 
 [identifier]: https://home-automation-app.netlify.app
 
-The back-end server can be found here: https://github.com/eavior/home-automation-nodejs-server
+The back-end server can be found here: <https://github.com/eavior/home-automation-nodejs-server>
+
+Update: I am creating another back-end server here: <https://github.com/eavior/django-server>
+This one is created with Django, to improve my Python skills. This server is deployed on AWS (<http://ec2-18-185-249-86.eu-central-1.compute.amazonaws.com/>)
 
 Future enhancements that should make it user-friendly, include:
 
 - account creation (email/Google/Apple/Facebook)
-- further development of the back-end server (saving all relevant data like API key, account data, 'friendly' AC names, data history in MongoDB; correctly dealing with exceptions/errors; creation of a new server in Python to improve my Python skills)
+- further development of the back-end server (saving all relevant data like API key, account data, 'friendly' AC names, data history in MongoDB; correctly dealing with exceptions/errors; further development of the Django server)
 - 'climate react' control (including disabling 'climate react' when the AC is turned off by a user or by a scheduler)
 - graphs
 - schedules
