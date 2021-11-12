@@ -10,7 +10,7 @@ This app is created with React, MUI and NodeJS. It is deployed on [Netlify][iden
 The back-end server can be found here: <https://github.com/eavior/home-automation-nodejs-server>
 
 <i>Update: I am creating another back-end server here: <https://github.com/eavior/django-server>.
-This one is created with Django, to improve my Python skills. I intend the functionality to be a copy of the NodeJS server. This server is deployed on AWS (<http://ec2-18-185-249-86.eu-central-1.compute.amazonaws.com/admin/>)</i>
+This one is created with Django, to improve my Python skills. I intend the functionality to be a copy of the NodeJS server. This server has been deployed on AWS EC2 (but has been deactivated now to avoid running costs).
 
 Future enhancements that should make it user-friendly, include:
 
